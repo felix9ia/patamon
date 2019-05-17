@@ -1,7 +1,7 @@
-import { WKT } from './node_modules/ol/format';
-import WMTSTileGrid from './node_modules/ol/tilegrid/WMTS';
-import WMTS from './node_modules/ol/source/WMTS';
-import { Tile } from './node_modules/ol/layer';
+import { WKT } from 'ol/format';
+import WMTSTileGrid from 'ol/tilegrid/WMTS';
+import WMTS from 'ol/source/WMTS';
+import { Tile } from 'ol/layer';
 
 const resolutions = [];
 const matrixIds = [];

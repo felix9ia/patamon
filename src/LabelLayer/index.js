@@ -1,8 +1,8 @@
-import {fromExtent} from './node_modules/ol/geom/Polygon';
-import Feature from './node_modules/ol/Feature';
-import { Vector as VectorLayer } from './node_modules/ol/layer';
-import {  Vector as VectorSource } from './node_modules/ol/source';
-import { Fill, Stroke, Style } from './node_modules/ol/style';
+import {fromExtent} from 'ol/geom/Polygon';
+import Feature from 'ol/Feature';
+import { Vector as VectorLayer } from 'ol/layer';
+import {  Vector as VectorSource } from 'ol/source';
+import { Fill, Stroke, Style } from 'ol/style';
 import MapHelper from '../Map'
 
 class LabelLayer {

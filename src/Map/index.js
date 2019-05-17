@@ -1,9 +1,9 @@
-import OlMap from './node_modules/ol/Map';
-import View from './node_modules/ol/View';
-import {  WKT } from './node_modules/ol/format';
-import { Tile as TileLayer} from './node_modules/ol/layer';
-import { XYZ as XYZSource } from './node_modules/ol/source';
-import { get as getProjection } from './node_modules/ol/proj';
+import OlMap from 'ol/Map';
+import View from 'ol/View';
+import {  WKT } from 'ol/format';
+import { Tile as TileLayer} from 'ol/layer';
+import { XYZ as XYZSource } from 'ol/source';
+import { get as getProjection } from 'ol/proj';
 
 const projection = getProjection('EPSG:4326');
 

@@ -1,10 +1,10 @@
-import Feature from './node_modules/ol/Feature';
-import Point from './node_modules/ol/geom/Point';
-import { Vector as VectorLayer } from './node_modules/ol/layer';
-import Overlay from './node_modules/ol/Overlay';
-import OverlayPositioning from './node_modules/ol/OverlayPositioning';
-import VectorSource from './node_modules/ol/source/Vector';
-import { Icon, Style } from './node_modules/ol/style';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import { Vector as VectorLayer } from 'ol/layer';
+import Overlay from 'ol/Overlay';
+import OverlayPositioning from 'ol/OverlayPositioning';
+import VectorSource from 'ol/source/Vector';
+import { Icon, Style } from 'ol/style';
 
 class MarkerLayer {
   popupList;

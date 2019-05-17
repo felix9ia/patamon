@@ -1,8 +1,9 @@
 {
   "name": "patamon",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "package openlayers",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "scripts": {
     "dev": "umi-lib build --watch",
     "build": "umi-lib build",
