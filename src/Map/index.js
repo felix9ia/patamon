@@ -1,11 +1,11 @@
-import OlMap from 'ol/Map';
-import View from 'ol/View';
-import {  WKT } from 'ol/format';
-import { Tile as TileLayer} from 'ol/layer';
-import { XYZ as XYZSource } from 'ol/source';
-import { get as getProjection } from 'ol/proj';
+import OlMap from "ol/Map";
+import View from "ol/View";
+import { WKT } from "ol/format";
+import { Tile as TileLayer } from "ol/layer";
+import { XYZ as XYZSource } from "ol/source";
+import { get as getProjection } from "ol/proj";
 
-const projection = getProjection('EPSG:4326');
+const projection = getProjection("EPSG:4326");
 
 class Map {
   constructor({ target, defaultView }) {
@@ -16,24 +16,42 @@ class Map {
     this.defaultView = defaultView;
     this.init();
   }
-/**
- * 
- * @param {Array} openlayers 遵循西、南、东、北
- */
-  static transformExtentToUni(extent) {
-    const west = extent[0];
-    const south = extent[1];
-    const east = extent[2];
-    const north = extent[3];
-    return [east, west, south, north];
-  }
-
-  static transformExtentToOl(extent) {
-    const east = extent[0];
-    const west = extent[1];
-    const south = extent[2];
-    const north = extent[3];
-    return [west, south, east, north];
+  /**
+   * 初始化
+   */
+  init() {
+    const base_map = "/WorldMap/Z{z}/{y}/{x}.jpg";
+    const { defaultView } = this;
+    const center = [
+      parseFloat(defaultView.center[0]),
+      parseFloat(defaultView.center[1])
+    ];
+    const zoom = parseFloat(defaultView.zoom);
+    const map = new OlMap({
+      layers: [
+        new TileLayer({
+          preload: Infinity,
+          source: new XYZSource({
+            url: base_map,
+            minZoom: 3,
+            maxZoom: 5,
+            tilePixelRatio: 1
+          })
+        })
+      ],
+      target: this.target,
+      view: new View({
+        center,
+        zoom,
+        extent: [-140, -85, 140, 85],
+        maxZoom: 22,
+        minZoom: 3,
+        projection
+      })
+    });
+    this.map = map;
+    this._watchResolutionChage();
+    return map;
   }
 
   getProjection = () => projection;
@@ -51,45 +69,10 @@ class Map {
     const unispaceExtent = Map.transformExtentToUni(extent);
     return {
       zoom: this.currentZoom,
-      extent: unispaceExtent,
+      extent: unispaceExtent
       // extent: transformExtent(extent, 'EPSG:3857', 'EPSG:4326'),
     };
   };
-
-  /**
-   * 初始化
-   */
-  init() {
-    const base_map = '/WorldMap/Z{z}/{y}/{x}.jpg';
-    const { defaultView } = this;
-    const center = [parseFloat(defaultView.center[0]), parseFloat(defaultView.center[1])];
-    const zoom = parseFloat(defaultView.zoom);
-    const map = new OlMap({
-      layers: [
-        new TileLayer({
-          preload: Infinity,
-          source: new XYZSource({
-            url: base_map,
-            minZoom: 3,
-            maxZoom: 5,
-            tilePixelRatio: 1,
-          }),
-        }),
-      ],
-      target: this.target,
-      view: new View({
-        center,
-        zoom,
-        extent: [-140, -85, 140, 85],
-        maxZoom: 22,
-        minZoom: 3,
-        projection,
-      }),
-    });
-    this.map = map;
-    this._watchResolutionChage();
-    return map;
-  }
 
   /**
    * 添加标记图层
@@ -98,7 +81,7 @@ class Map {
    */
   addMarkerLayer = ({ layer, overlay }) => {
     if (!layer || !overlay) {
-      console.warn('addMarkerLayer未能初始化某些参数');
+      console.warn("addMarkerLayer未能初始化某些参数");
     }
     layer && this.addLayer(layer);
     overlay && this.map.addOverlay(overlay);
@@ -117,16 +100,16 @@ class Map {
    * @param id
    * @returns {*|Array}
    */
-  getCommonLayers = (id) => {
+  getCommonLayers = id => {
     let finedLayer;
     if (id) {
       // return this.layerList.find(layer.id === id);
       const allLayers = this.map.getLayers();
-      allLayers.forEach((layer) => {
+      allLayers.forEach(layer => {
         const source = layer.getSource();
         const urls = source.getUrls(); // 这里居然可以是数组，可以放好多个！
         const layerUrl = urls[0];
-        const segmentedUrl = layerUrl.split('/');
+        const segmentedUrl = layerUrl.split("/");
         if (segmentedUrl[3] === id) {
           finedLayer = layer;
         }
@@ -140,20 +123,40 @@ class Map {
      * 分两种情况
      * 1.如果直接给[120.28877476616279, 120.2771892039965, 36.03962683748332, 36.04903575709562]
      */
-    const isNumberArray = typeof ImgRange === 'object';
+    const isNumberArray = typeof ImgRange === "object";
     let extent;
     if (isNumberArray) {
       extent = Map.transformExtentToOl(ImgRange);
     } else {
-    const imgFeature = new WKT().readFeature(ImgRange);
+      const imgFeature = new WKT().readFeature(ImgRange);
       extent = imgFeature.getGeometry().getExtent();
     }
-    this.map.getView().fit( extent, this.map.getSize());
+    this.map.getView().fit(extent, this.map.getSize());
+  }
+
+  /**
+   *
+   * @param {Array} openlayers 遵循西、南、东、北
+   */
+  static transformExtentToUni(extent) {
+    const west = extent[0];
+    const south = extent[1];
+    const east = extent[2];
+    const north = extent[3];
+    return [east, west, south, north];
+  }
+
+  static transformExtentToOl(extent) {
+    const east = extent[0];
+    const west = extent[1];
+    const south = extent[2];
+    const north = extent[3];
+    return [west, south, east, north];
   }
 
   _watchResolutionChage() {
     // 监听图层级别
-    this.map.getView().on('change:resolution', () => {
+    this.map.getView().on("change:resolution", () => {
       // 为何要取整？？
       const zoom = Math.floor(this.map.getView().getZoom());
       this.currentZoom = zoom;
