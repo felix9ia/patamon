@@ -16,12 +16,15 @@ class Map {
     this.defaultView = defaultView;
     this.init();
   }
-
+/**
+ * 
+ * @param {Array} openlayers 遵循西、南、东、北
+ */
   static transformExtentToUni(extent) {
-    const east = extent[2];
-    const west = extent[3];
+    const west = extent[0];
     const south = extent[1];
-    const north = extent[0];
+    const east = extent[2];
+    const north = extent[3];
     return [east, west, south, north];
   }
 

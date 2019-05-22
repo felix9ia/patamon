@@ -1,6 +1,6 @@
 {
   "name": "patamon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "package openlayers",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

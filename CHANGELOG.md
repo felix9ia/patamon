@@ -12,6 +12,11 @@
 https://markdownlivepreview.com
 
 ---
+## 0.1.2
+
+`2019-5-??`
+
+- 🐞  修复ol的extent转unispace的格式
 ## 0.1.1
 
 `2019-5-17`
